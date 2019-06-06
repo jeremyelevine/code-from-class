@@ -28,14 +28,14 @@ void data_types_and_decls() {
     // you can convert from int to bool
     // all nonzero numbers are true
     bool b2 = 0; bool b3 = 55234232; 
-
+    //casting a double to an integer. 
     int n = static_cast<int>(6.3);
 
     bool b4 = -55234232;
 
     cout << b4 << endl;
     cout << static_cast<int>(b4) << endl;
-
+    //bools are printed as integers. 
     bool b5 = 0.00;
 
     cout << b5 << endl;
@@ -50,6 +50,7 @@ void while_loops() {
     // while:
     // check condition first, execute the body if true, then
     // check the condition again, …
+    // until condition becomes false. 
 
     while (x < 0) {
         cout << "This never happens" << endl;
@@ -59,6 +60,7 @@ void while_loops() {
     // execute the body,
     // check the condition, execute the body if true,
     // check the condition again, …
+    // FIRST does the body uncoditionally, THEN checks the condition and runs body again if met. 
 
     do {
         cout << "But this does" << endl;
@@ -75,7 +77,7 @@ void for_loops() {
     // execute body if true; otherwise end the loop
     // execute increment statement
     // goto loop
-    for (int i = 10; i >= 1; i++) {
+    for (int i = 10; i >= 1; i--) {
         cout << i << endl;
     }
     cout << "lift off!" << endl;
@@ -97,19 +99,27 @@ void exprs() {
     // ++y sets y to 8, and "returns" 8
 
     // how do you write the parentheses in the next line?
-    cout << ( x + 1 < 5 && y == 9 || b1 && b2 ) << endl;
+    cout << ( (((x + 1) < 5) && (y == 9)) || (b1 && b2) ) << endl;
 }
 
 void exprs2() {
     int x = 5;
 
-    int y = x++; // change x to 6, and set y to the old value
+    int y = x++; // change x to 6, and sets y to the old value
 
     cout << y << endl;
 
-    cout << x++ << endl;
-    cout << ++x << endl;
+    cout << x++ << endl; // return x and add one. 
+    cout << ++x << endl; //add one to x and return the new value after that. 
+    
+    //any assignment statement where you try to use its value is set to the value that your variable was set to
+    //cout << (x += 1) << endl; 
 }
+// Prints 
+// 5
+// 6
+// 8
+// 8
 
 // Data representation
 
@@ -130,7 +140,8 @@ see book for more details
 
 void arrays() {
     int arr[] = {1, 2, 3}; // can initialize with data immediately
-
+    // array declared without values must have a size
+    // ex. int arr[3]; 
     // arr by itself is a pointer to the first element
 
     int arr2[3]; // or wait to do so
@@ -145,16 +156,29 @@ void arrays() {
     cout << endl;
 }
 
+// char s[42];
+// creates array s with 42 values
+// s by itself is the address of its first element
+// "passing along the whole array" means pointing to the start of the array
+// *s is the value of the first element
+
+
+
 // Passing parameters to functions (by value, by pointer, by reference)
 
 void by_value(int x) {
     x = 5;
 }
 
+//dereference operation creates pointer to x and sets x to 6. 
 void by_pointer(int *x) {
     *x = 6;
+    cout << *x << endl; 
+    cout << x << endl; 
+    cout << &x << endl;
 }
 
+// reference parameter creates alias for 
 void by_reference(int &x) {
     x = 7;
 }
@@ -195,6 +219,9 @@ void pointers() {
     cout << *y << endl;
 }
 
+// See scratch.cpp for more on pointers
+
+
 // Structs
 
 /*
@@ -209,6 +236,7 @@ struct Point {
     int x;
     int y;
 };
+// x and y are next to each other in memory within the struct, like an array. 
 
 void structs() {
     Point p1 = {1, 2};
@@ -218,7 +246,12 @@ void structs() {
     p2.y = 4;
 
     Point *pp = &p2;
+    // pp is an alias pointing to p2
     pp->y = 5;
+    
+    Point p3 = p2; 
+    // p3 is a new Point in memory with p2's values. 
+    // futzing with p3 does not affect p2. 
 }
 
 // Pointers and structs
@@ -231,6 +264,7 @@ void setToZero(Point *p) {
 // Pointers and arrays
 
 void printArray(int *arr, int size) {
+    // *arr is equivalent to arr[]. Point arithmetic works for arr[].
     while (size > 0) {
         cout << *arr;
         arr = arr + 1;
@@ -251,6 +285,7 @@ void printPoint(const Point &p) {
     // we can use the . with references
     cout << "(" << p.x << ", " << p.y << ")";
 }
+// without const, changing the referenCE variable will affect the referenCED variable
 
 void printArrayOfPoints(Point arr[], int size) {
     for (int i = 0; i < size; i++) {
@@ -275,6 +310,15 @@ void dynamic_memory_allocation() {
     int *arr = new int[10];
     delete[] arr;
 }
+// x, y and arr are local variables on the stack. 
+// x holds value of five. 
+// y points to variable on the heap. 
+// arr points to array of size ten on the heap.
+// delete[] y removes value y holds on the heap
+// delete[] arr removes value of arr on the heap.
+// not deleting data on the heap eventually causes memory leaks. 
+
+
 
 // Linked-lists
 struct Node {
@@ -289,11 +333,11 @@ struct LinkedList {
 
 // make the list 1->2->3->X
 LinkedList* one_two_three() {
-    LinkedList *l = new LinkedList;
+    LinkedList *l = new LinkedList; //Nodes and linked list live on the heap. 
 
     Node *one = new Node;
     Node *two = new Node;
-    Node *three = new Node;
+    Node *three = new Node; // Nodes one, two, and three are all local variables pointing to information on the heap. 
     one->data = 1;
     two->data = 2;
     three->data = 2;
@@ -311,6 +355,8 @@ LinkedList* one_two_three() {
 
 #include <cstring>
 
+
+//I really really really badly need to do some reading on strings and recursion... 
 void c_strings() {
     char s1[50] = "cat";
     const char *s2 = "dog";
@@ -399,4 +445,20 @@ void print_list_backwards(Node *head) {
 
     print_list_backwards(head->next);
     cout << head->data << endl;
+}
+
+
+int fact(int n) {
+    if(n == 0) return 1; 
+    else return n*fact(n-1); 
+}
+// stacks fact(3) on top of main, then fact(2) on top of fact(3), on to fact(0) above fact(1)
+// and then the process multiplies down to main
+
+void print_list_backwards(Node *head){
+    if(head == NULL) return; 
+    
+    print_list_backwards(head->next); 
+    cout << head ->data << endl; 
+    
 }
